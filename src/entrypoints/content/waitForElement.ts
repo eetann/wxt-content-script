@@ -4,6 +4,7 @@ export async function waitForElement(
 	return new Promise((resolve) => {
 		const elm = document.querySelector(selector);
 		if (elm) {
+			console.log("すぐ見つかった");
 			resolve(elm);
 			return;
 		}
@@ -15,6 +16,7 @@ export async function waitForElement(
 				for (const node of mutation.addedNodes) {
 					if (!(node instanceof HTMLElement)) continue;
 					if (node.matches(selector)) {
+						console.log("差分で見つかった");
 						clearTimeout(timeout);
 						observer.disconnect();
 						resolve(node);
