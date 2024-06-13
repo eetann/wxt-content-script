@@ -7,7 +7,7 @@ export default defineContentScript({
 	// matches: ["https://*.youtube.com/"],
 	async main(ctx) {
 		const anchor = await waitForElement("body > div");
-		// const anchor = await waitForElement("a[title='ほほ評価した動画']");
+		// const anchor = await waitForElement("a[title='高く評価した動画']");
 		if (typeof anchor === "undefined") {
 			console.log("見つかりませんでした。");
 			return;
