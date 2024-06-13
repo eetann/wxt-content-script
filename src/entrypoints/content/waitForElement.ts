@@ -4,33 +4,27 @@ export async function waitForElement(
 	return new Promise((resolve) => {
 		const elm = document.querySelector(selector);
 		if (elm) {
-			console.log("すぐ見つかった");
-			resolve(elm);
-			return;
+			console.log("最初に見つかった");
+			return resolve(elm);
 		}
+
 		const observer = new MutationObserver((mutations) => {
 			for (const mutation of mutations) {
-				if (mutation.addedNodes.length === 0) {
-					continue;
-				}
 				for (const node of mutation.addedNodes) {
-					if (!(node instanceof HTMLElement)) continue;
-					if (node.matches(selector)) {
-						console.log("差分で見つかった");
-						clearTimeout(timeout);
+					if (node instanceof Element && node.matches(selector)) {
 						observer.disconnect();
-						resolve(node);
-						return;
+						clearTimeout(timeout);
+						console.log("差分で見つかった");
+						return resolve(node);
 					}
 				}
 			}
 		});
 		const timeout = setTimeout(() => {
-			clearTimeout(timeout);
 			observer.disconnect();
-			resolve(undefined);
-			return;
-		}, 15000);
+			console.log("見つからなかった");
+			return resolve(undefined);
+		}, 10000);
 		observer.observe(document.body, {
 			childList: true,
 			subtree: true,
